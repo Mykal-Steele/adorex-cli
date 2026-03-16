@@ -4,13 +4,14 @@
   "description": "Express + TypeScript + Prisma + SQLite application scaffolded with adorex-cli",
   "license": "ISC",
   "type": "module",
+  "adorex": {
+    "scaffoldedWith": "{{scaffoldedWith}}"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "start": "node dist/index.js"
   },
   "engines": {
     "node": "^22.12 || ^24.0"

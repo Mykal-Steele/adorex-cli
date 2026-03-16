@@ -1,52 +1,50 @@
-# Adorex App
+# {{appName}}
 
-Express + TypeScript + Prisma + SQLite
+Express + TypeScript + Prisma + SQLite starter app.
 
-## Node support
+Scaffolded with {{scaffoldedWith}}.
 
-This project is tested with Node `^22.12 || ^24.0`.
-If you run a different Node version and hit issues, switch to one of those LTS versions.
+## Requirements
 
-## Setup
+- Node `^22.12 || ^24.0`
 
-After creating the project, run your first migration:
+## Quick start
 
-```
+1. Create your first migration:
+
+```bash
 npx prisma migrate dev --name init
 ```
 
-Then start the dev server:
+2. Start the dev server:
 
-```
+```bash
 npm run dev
 ```
 
 ## Scripts
 
-- `npm run dev` - dev server with hot reload
-- `npm run typecheck` - run TypeScript checks without emitting files
-- `npm run build` - compile TypeScript
-- `npm run start` - run compiled build
-- `npm run prisma:generate` - regenerate the Prisma client
-- `npm run prisma:migrate -- --name <name>` - create and apply a development migration
+- `npm run dev` - start dev server with watch mode
+- `npm run typecheck` - run TypeScript checks only
+- `npm run build` - compile to `dist/`
+- `npm run start` - run compiled app
 
 ## Database
 
-Edit schema in `prisma/schema.prisma`, then migrate:
+Edit `prisma/schema.prisma`, then run:
 
-```
+```bash
 npx prisma migrate dev --name <name>
 ```
 
-The generated Prisma client is written to `src/generated/prisma`.
+Prisma client output goes to `src/generated/prisma`.
+Regenerate Prisma client with `npx prisma generate` when needed.
 
 ## Environment
 
-Defaults are in `.env`:
+Default `.env` values:
 
-```
+```env
 PORT=3000
 DATABASE_URL="file:./dev.db"
 ```
-
-Database connection and migrations are configured in `prisma.config.ts`, which reads `DATABASE_URL` from the environment.

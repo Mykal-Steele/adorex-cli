@@ -1,14 +1,13 @@
 # adorex
 
-Scaffold an Express + TypeScript + Prisma + SQLite project in seconds.
+Simple CLI to scaffold an Express + TypeScript + Prisma + SQLite app.
 
-CLI runtime: Node `>=18`.
+CLI runtime: Node `>=22`.
 Generated apps are tested with Node `^22.12 || ^24.0`.
-For team consistency, pin one Node LTS version in CI and local dev using `.nvmrc`, Volta, or asdf.
 
 ## Usage
 
-```
+```bash
 npx adorex-cli <project-name>
 cd project-name
 npx prisma migrate dev --name init
@@ -34,12 +33,10 @@ my-app/
 
 ## Scripts
 
-- `npm run dev` — dev server with hot reload (tsx watch)
-- `npm run typecheck` — type check without emitting files
-- `npm run build` — compile TypeScript to `dist/`
-- `npm run start` — run compiled output (`dist/index.js`)
-- `npm run prisma:generate` — regenerate the Prisma client
-- `npm run prisma:migrate -- --name <name>` — create and apply a migration
+- `npm run dev` - dev server with hot reload
+- `npm run typecheck` - type check only
+- `npm run build` - compile TypeScript to `dist/`
+- `npm run start` - run compiled output
 
 ## Stack
 

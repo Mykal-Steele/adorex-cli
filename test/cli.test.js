@@ -36,6 +36,7 @@ function runCli(args, cwd) {
 		env: {
 			...process.env,
 			ADOREX_SKIP_SETUP: "1",
+			ADOREX_DISABLE_UPDATE_NOTIFIER: "1",
 		},
 		encoding: "utf8",
 	});
@@ -55,10 +56,10 @@ test("creates a scaffolded project", () => {
 	withTempDir((tempDir) => {
 		const projectName = "My App";
 		const result = runCli([projectName], tempDir);
+		const combinedOutput = `${result.stdout}\n${result.stderr}`;
 
 		assert.equal(result.status, 0, result.stderr);
-		assert.match(result.stdout, /___\s+__\s+_\s*/);
-		assert.match(result.stdout, /Done! Next steps:/);
+		assert.match(combinedOutput, /___\s+__\s+_\s*/);
 
 		const projectPath = path.join(tempDir, projectName);
 		const packageJson = readJson(path.join(projectPath, "package.json"));
@@ -81,7 +82,7 @@ test("shows usage when project name is missing", () => {
 		const result = runCli([], tempDir);
 
 		assert.equal(result.status, 1);
-		assert.match(result.stderr, /Usage: npx adorex-cli <project-name>/);
+		assert.match(`${result.stdout}\n${result.stderr}`, /Usage: npx adorex-cli <project-name>/);
 	});
 });
 
@@ -90,7 +91,7 @@ test("rejects project names that include a slash", () => {
 		const result = runCli(["foo/bar"], tempDir);
 
 		assert.equal(result.status, 1);
-		assert.match(result.stderr, /Project name must be a single directory name/);
+		assert.match(`${result.stdout}\n${result.stderr}`, /Project name must be a single directory name/);
 	});
 });
 
@@ -102,7 +103,25 @@ test("fails if target directory already exists", () => {
 		const result = runCli([projectName], tempDir);
 
 		assert.equal(result.status, 1);
-		assert.match(result.stderr, /already exists/);
+		assert.match(`${result.stdout}\n${result.stderr}`, /already exists/);
+	});
+});
+
+test("shows help output", () => {
+	withTempDir((tempDir) => {
+		const result = runCli(["--help"], tempDir);
+
+		assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+		assert.match(`${result.stdout}\n${result.stderr}`, /Scaffold a new Express \+ TypeScript \+ Prisma app/);
+	});
+});
+
+test("shows version output", () => {
+	withTempDir((tempDir) => {
+		const result = runCli(["--version"], tempDir);
+
+		assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+		assert.match(`${result.stdout}\n${result.stderr}`, new RegExp(cliPackageJson.version));
 	});
 });
 
@@ -136,32 +155,15 @@ test("utils generated app Node support matches Prisma matrix", () => {
 });
 
 test("utils warnIfUnsupportedGeneratedAppNode prints warning details", () => {
-	const warnings = [];
-	const originalWarn = console.warn;
-	console.warn = (line) => warnings.push(String(line ?? ""));
-
-	try {
-		const supported = warnIfUnsupportedGeneratedAppNode("30.0.0");
-		assert.equal(supported, false);
-		assert.equal(warnings.some((line) => line.includes("tested with")), true);
-		assert.equal(warnings.some((line) => line.includes("30.0.0")), true);
-	} finally {
-		console.warn = originalWarn;
-	}
+	const warning = warnIfUnsupportedGeneratedAppNode("30.0.0");
+	assert.equal(typeof warning, "string");
+	assert.equal(warning.includes("tested with"), true);
+	assert.equal(warning.includes("30.0.0"), true);
 });
 
 test("utils warnIfUnsupportedGeneratedAppNode is quiet for supported versions", () => {
-	const warnings = [];
-	const originalWarn = console.warn;
-	console.warn = (line) => warnings.push(String(line ?? ""));
-
-	try {
-		const supported = warnIfUnsupportedGeneratedAppNode("22.12.0");
-		assert.equal(supported, true);
-		assert.equal(warnings.length, 0);
-	} finally {
-		console.warn = originalWarn;
-	}
+	const warning = warnIfUnsupportedGeneratedAppNode("22.12.0");
+	assert.equal(warning, null);
 });
 
 test("utils printNextSteps includes Node support guidance", () => {
@@ -171,6 +173,7 @@ test("utils printNextSteps includes Node support guidance", () => {
 
 	try {
 		printNextSteps("demo-app");
+		assert.equal(logs.some((line) => line.includes('cd "demo-app"')), true);
 		assert.equal(logs.some((line) => line.includes("npx prisma migrate dev --name init")), true);
 		assert.equal(logs.some((line) => line.includes("npm run dev")), true);
 	} finally {

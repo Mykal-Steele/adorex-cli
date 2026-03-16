@@ -1,7 +1,7 @@
 {
   "name": "adorex-cli",
   "version": "1.2.2",
-  "description": "Create Express + TypeScript + Prisma + SQLite projects instantly",
+  "description": "Scaffold Express + TypeScript + Prisma + SQLite apps",
   "type": "module",
   "bin": {
     "adorex": "bin/cli.js"
@@ -12,12 +12,19 @@
   "files": [
     "bin/",
     "lib/",
-    "test/",
     "template/"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mykal-Steele/adorex-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mykal-Steele/adorex-cli/issues"
+  },
+  "homepage": "https://github.com/Mykal-Steele/adorex-cli",
   "keywords": [
     "express",
     "typescript",
@@ -27,6 +34,20 @@
     "cli",
     "starter"
   ],
-  "author": "",
-  "license": "ISC"
+  "author": "Mykal Steele",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^1.1.0",
+    "boxen": "^8.0.1",
+    "cac": "^7.0.0",
+    "execa": "^9.6.1",
+    "fs-extra": "^11.3.4",
+    "handlebars": "^4.7.8",
+    "log-symbols": "^7.0.1",
+    "ora": "^9.3.0",
+    "picocolors": "^1.1.1",
+    "semver": "^7.7.4",
+    "update-notifier-cjs": "^5.1.7",
+    "validate-npm-package-name": "^7.0.2"
+  }
 }

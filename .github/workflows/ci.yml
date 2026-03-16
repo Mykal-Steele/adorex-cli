@@ -63,10 +63,17 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Scaffold generated app
+        env:
+          ADOREX_DISABLE_UPDATE_NOTIFIER: "1"
         run: |
           node bin/cli.js smoke-app
       - name: Verify generated app compiles
         working-directory: smoke-app
         run: |
+          npx prisma validate
           npm run typecheck
           npm run build
+      - name: Verify generated app starts
+        working-directory: smoke-app
+        run: |
+          timeout 12s npm run start || [ $? -eq 124 ]
