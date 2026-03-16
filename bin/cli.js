@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { cac } from "cac";
-import { cancel, intro, isCancel, note, outro, text } from "@clack/prompts";
+import { cancel, intro, isCancel, note, text } from "@clack/prompts";
 import boxen from "boxen";
 import logSymbols from "log-symbols";
 import pc from "picocolors";

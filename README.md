@@ -1,46 +1,86 @@
-# adorex
+# adorex ![npm version](https://img.shields.io/npm/v/adorex-cli?style=flat-square&label=npm&labelColor=6b7280&color=0A84FF)
 
-Simple CLI to scaffold an Express + TypeScript + Prisma + SQLite app.
+Quickly scaffold an Express + TypeScript + Prisma + SQLite app.
 
-CLI runtime: Node `>=22`.
-Generated apps are tested with Node `^22.12 || ^24.0`.
+## Scaffolding Your First Adorex Project
 
-## Usage
+Compatibility note:
+
+- CLI runtime: Node `>=22`
+- Generated app support: Node `^22.12 || ^24.0`
+
+With npm:
 
 ```bash
-npx adorex-cli <project-name>
-cd project-name
+npx adorex-cli
+```
+
+With pnpm:
+
+```bash
+pnpm dlx adorex-cli
+```
+
+With yarn:
+
+```bash
+yarn dlx adorex-cli
+```
+
+Or install globally and use `adorex` directly:
+
+```bash
+npm i -g adorex-cli
+adorex
+```
+
+Then follow the prompts.
+
+You can also provide the project name directly:
+
+```bash
+npx adorex-cli my-app
+pnpm dlx adorex-cli my-app
+yarn dlx adorex-cli my-app
+adorex my-app
+```
+
+Then follow the next steps:
+
+```bash
+cd my-app
 npx prisma migrate dev --name init
 npm run dev
 ```
 
-If you install the package globally with `npm install -g adorex-cli`, the command is `adorex <project-name>`.
+## What You Get
 
-## What you get
-
-```
+```text
 my-app/
   src/
-    index.ts          # Express server
-    utils/prisma.ts   # Prisma client with libsql adapter
-    generated/        # Prisma generated client (after generate)
+    index.ts
+    utils/
+      logger.ts
+      prisma.ts
   prisma/
-    schema.prisma     # Database schema
-  prisma.config.ts    # Prisma 7.5 config (loads .env)
+    schema.prisma
+  prisma.config.ts
   tsconfig.json
-  .env                # PORT=3000, DATABASE_URL=file:./dev.db
+  .env
 ```
-
-## Scripts
-
-- `npm run dev` - dev server with hot reload
-- `npm run typecheck` - type check only
-- `npm run build` - compile TypeScript to `dist/`
-- `npm run start` - run compiled output
 
 ## Stack
 
-- Express 5
-- TypeScript
-- Prisma 7.5 with libsql adapter
-- SQLite
+- Node.js: `^22.12 || ^24.0`
+- Express: `^5.2.1`
+- TypeScript: `^5.9.2`
+- Prisma ORM: `prisma ^7.5.0` + `@prisma/client ^7.5.0`
+- SQLite via libsql: `@libsql/client ^0.17.0` + `@prisma/adapter-libsql ^7.5.0`
+- Tooling: `tsx ^4.20.5`, `dotenv ^16.4.7`
+
+## Generated App Scripts
+
+- `npm run dev` - start dev server with watch mode
+- `npm run typecheck` - run TypeScript checks
+- `npm run build` - compile to `dist/`
+- `npm run start` - run compiled app
