@@ -3,7 +3,7 @@
 Scaffold an Express + TypeScript + Prisma + SQLite project in seconds.
 
 CLI runtime: Node `>=18`.
-Generated apps are tested with Node `^20.19 || ^22.12 || ^24.0`.
+Generated apps are tested with Node `^22.12 || ^24.0`.
 For team consistency, pin one Node LTS version in CI and local dev using `.nvmrc`, Volta, or asdf.
 
 ## Usage

@@ -127,9 +127,8 @@ test("utils parseNodeVersion parses semver parts", () => {
 });
 
 test("utils generated app Node support matches Prisma matrix", () => {
-	assert.equal(getGeneratedAppNodeSupportText(), "^20.19 || ^22.12 || ^24.0");
-	assert.equal(isGeneratedAppNodeVersionSupported("20.18.0"), false);
-	assert.equal(isGeneratedAppNodeVersionSupported("20.19.0"), true);
+	assert.equal(getGeneratedAppNodeSupportText(), "^22.12 || ^24.0");
+	assert.equal(isGeneratedAppNodeVersionSupported("21.0.0"), false);
 	assert.equal(isGeneratedAppNodeVersionSupported("22.11.0"), false);
 	assert.equal(isGeneratedAppNodeVersionSupported("22.12.0"), true);
 	assert.equal(isGeneratedAppNodeVersionSupported("24.0.0"), true);

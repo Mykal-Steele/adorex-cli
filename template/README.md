@@ -4,7 +4,7 @@ Express + TypeScript + Prisma + SQLite
 
 ## Node support
 
-This project is tested with Node `^20.19 || ^22.12 || ^24.0`.
+This project is tested with Node `^22.12 || ^24.0`.
 If you run a different Node version and hit issues, switch to one of those LTS versions.
 
 ## Setup
@@ -37,6 +37,7 @@ Edit schema in `prisma/schema.prisma`, then migrate:
 ```
 npx prisma migrate dev --name <name>
 ```
+
 The generated Prisma client is written to `src/generated/prisma`.
 
 ## Environment
