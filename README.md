@@ -15,10 +15,6 @@ npm run dev
 
 If you install the package globally with `npm install -g adorex-cli`, the command is `adorex <project-name>`.
 
-## Development
-
-- `npm test` - verify the CLI still creates the expected project files
-
 ## What you get
 
 ```

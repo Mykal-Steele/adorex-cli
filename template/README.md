@@ -32,7 +32,6 @@ Edit schema in `prisma/schema.prisma`, then migrate:
 ```
 npx prisma migrate dev --name <name>
 ```
-
 The generated Prisma client is written to `src/generated/prisma`.
 
 ## Environment
