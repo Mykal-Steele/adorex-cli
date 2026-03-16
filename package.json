@@ -1,6 +1,6 @@
 {
   "name": "adorex-cli",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Create Express + TypeScript + Prisma + SQLite projects instantly",
   "type": "module",
   "bin": {
