@@ -8,24 +8,44 @@ import {
 	runInstall,
 	runPrismaGenerate,
 } from "../lib/scaffold.js";
-import { personalizeTemplate, printNextSteps, readCliVersion, validateProjectName } from "../lib/utils.js";
+import {
+	personalizeTemplate,
+	printCliLogo,
+	printNextSteps,
+	readCliVersion,
+	validateProjectName,
+	warnIfUnsupportedGeneratedAppNode,
+} from "../lib/utils.js";
 
 const cliVersion = readCliVersion(CLI_PACKAGE_JSON_PATH);
 const scaffoldedWith = `adorex-cli@${cliVersion}`;
-const projectName = process.argv[2]?.trim();
-const skipSetup = process.env.ADOREX_SKIP_SETUP === "1";
 
-validateProjectName(projectName);
+function main() {
+	const projectName = process.argv[2]?.trim();
+	const skipSetup = process.env.ADOREX_SKIP_SETUP === "1";
 
-const projectPath = path.join(process.cwd(), projectName);
-ensureProjectPathAvailable(projectPath, projectName);
-copyTemplate(TEMPLATE_DIR, projectPath);
-personalizeTemplate(projectPath, projectName, scaffoldedWith);
+	printCliLogo();
+	validateProjectName(projectName);
+	warnIfUnsupportedGeneratedAppNode();
 
-console.log(`Created ${projectName}`);
-if (!skipSetup) {
-	runInstall(projectPath);
-	runPrismaGenerate(projectPath);
+	const projectPath = path.join(process.cwd(), projectName);
+	ensureProjectPathAvailable(projectPath, projectName);
+	copyTemplate(TEMPLATE_DIR, projectPath);
+	personalizeTemplate(projectPath, projectName, scaffoldedWith);
+
+	console.log(`Created ${projectName}`);
+	if (!skipSetup) {
+		runInstall(projectPath);
+		runPrismaGenerate(projectPath);
+	}
+
+	printNextSteps(projectName);
 }
 
-printNextSteps(projectName);
+try {
+	main();
+} catch (error) {
+	const message = error instanceof Error ? error.message : String(error);
+	console.error(`Error: ${message}`);
+	process.exit(1);
+}

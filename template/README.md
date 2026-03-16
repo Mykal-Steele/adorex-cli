@@ -2,6 +2,11 @@
 
 Express + TypeScript + Prisma + SQLite
 
+## Node support
+
+This project is tested with Node `^20.19 || ^22.12 || ^24.0`.
+If you run a different Node version and hit issues, switch to one of those LTS versions.
+
 ## Setup
 
 After creating the project, run your first migration:

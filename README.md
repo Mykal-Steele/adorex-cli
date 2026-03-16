@@ -2,7 +2,9 @@
 
 Scaffold an Express + TypeScript + Prisma + SQLite project in seconds.
 
-Generated apps target Prisma's supported Node.js versions: `^20.19 || ^22.12 || ^24.0`.
+CLI runtime: Node `>=18`.
+Generated apps are tested with Node `^20.19 || ^22.12 || ^24.0`.
+For team consistency, pin one Node LTS version in CI and local dev using `.nvmrc`, Volta, or asdf.
 
 ## Usage
 

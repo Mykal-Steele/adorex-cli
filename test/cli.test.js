@@ -6,7 +6,16 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from "../lib/constants.js";
-import { readCliVersion, toPackageName } from "../lib/utils.js";
+import {
+	getGeneratedAppNodeSupportText,
+	isGeneratedAppNodeVersionSupported,
+	parseNodeVersion,
+	printCliLogo,
+	readCliVersion,
+	toPackageName,
+	warnIfUnsupportedGeneratedAppNode,
+	printNextSteps,
+} from "../lib/utils.js";
 
 const cliPath = path.join(process.cwd(), "bin/cli.js");
 const cliPackageJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), "package.json"), "utf8"));
@@ -48,6 +57,7 @@ test("creates a scaffolded project", () => {
 		const result = runCli([projectName], tempDir);
 
 		assert.equal(result.status, 0, result.stderr);
+		assert.match(result.stdout, /___\s+__\s+_\s*/);
 		assert.match(result.stdout, /Done! Next steps:/);
 
 		const projectPath = path.join(tempDir, projectName);
@@ -109,6 +119,79 @@ test("utils toPackageName normalizes names", () => {
 	assert.equal(toPackageName("My App"), "my-app");
 	assert.equal(toPackageName("__Demo..App__"), "demo-app");
 	assert.equal(toPackageName("***"), "adorex-app");
+});
+
+test("utils parseNodeVersion parses semver parts", () => {
+	assert.deepEqual(parseNodeVersion("22.13.1"), { major: 22, minor: 13, patch: 1 });
+	assert.deepEqual(parseNodeVersion("invalid"), { major: 0, minor: 0, patch: 0 });
+});
+
+test("utils generated app Node support matches Prisma matrix", () => {
+	assert.equal(getGeneratedAppNodeSupportText(), "^20.19 || ^22.12 || ^24.0");
+	assert.equal(isGeneratedAppNodeVersionSupported("20.18.0"), false);
+	assert.equal(isGeneratedAppNodeVersionSupported("20.19.0"), true);
+	assert.equal(isGeneratedAppNodeVersionSupported("22.11.0"), false);
+	assert.equal(isGeneratedAppNodeVersionSupported("22.12.0"), true);
+	assert.equal(isGeneratedAppNodeVersionSupported("24.0.0"), true);
+	assert.equal(isGeneratedAppNodeVersionSupported("30.0.0"), false);
+});
+
+test("utils warnIfUnsupportedGeneratedAppNode prints warning details", () => {
+	const warnings = [];
+	const originalWarn = console.warn;
+	console.warn = (line) => warnings.push(String(line ?? ""));
+
+	try {
+		const supported = warnIfUnsupportedGeneratedAppNode("30.0.0");
+		assert.equal(supported, false);
+		assert.equal(warnings.some((line) => line.includes("tested with")), true);
+		assert.equal(warnings.some((line) => line.includes("30.0.0")), true);
+	} finally {
+		console.warn = originalWarn;
+	}
+});
+
+test("utils warnIfUnsupportedGeneratedAppNode is quiet for supported versions", () => {
+	const warnings = [];
+	const originalWarn = console.warn;
+	console.warn = (line) => warnings.push(String(line ?? ""));
+
+	try {
+		const supported = warnIfUnsupportedGeneratedAppNode("22.12.0");
+		assert.equal(supported, true);
+		assert.equal(warnings.length, 0);
+	} finally {
+		console.warn = originalWarn;
+	}
+});
+
+test("utils printNextSteps includes Node support guidance", () => {
+	const logs = [];
+	const originalLog = console.log;
+	console.log = (line) => logs.push(String(line ?? ""));
+
+	try {
+		printNextSteps("demo-app");
+		assert.equal(logs.some((line) => line.includes("npx prisma migrate dev --name init")), true);
+		assert.equal(logs.some((line) => line.includes("npm run dev")), true);
+	} finally {
+		console.log = originalLog;
+	}
+});
+
+test("utils printCliLogo outputs the CLI banner", () => {
+	const logs = [];
+	const originalLog = console.log;
+	console.log = (line) => logs.push(String(line ?? ""));
+
+	try {
+		printCliLogo();
+		const rendered = logs.join("\n");
+		assert.equal(rendered.includes("___       __"), true);
+		assert.equal(rendered.includes("/____/ .___/"), true);
+	} finally {
+		console.log = originalLog;
+	}
 });
 
 test("constants resolve to existing template and package paths", () => {
