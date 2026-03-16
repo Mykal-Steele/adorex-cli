@@ -136,6 +136,5 @@ try {
 } catch (error) {
 	const message = error instanceof Error ? error.message : String(error);
 	cancel(message);
-	note("Scaffolding was aborted before completion.", "Status");
 	process.exitCode = 1;
 }

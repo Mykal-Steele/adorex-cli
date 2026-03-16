@@ -7,9 +7,8 @@ import test from "node:test";
 
 import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from "../lib/constants.js";
 import {
-	getGeneratedAppNodeSupportText,
+	SUPPORTED_GENERATED_APP_NODE_TEXT,
 	isGeneratedAppNodeVersionSupported,
-	parseNodeVersion,
 	printCliLogo,
 	readCliVersion,
 	toPackageName,
@@ -140,13 +139,8 @@ test("utils toPackageName normalizes names", () => {
 	assert.equal(toPackageName("***"), "adorex-app");
 });
 
-test("utils parseNodeVersion parses semver parts", () => {
-	assert.deepEqual(parseNodeVersion("22.13.1"), { major: 22, minor: 13, patch: 1 });
-	assert.deepEqual(parseNodeVersion("invalid"), { major: 0, minor: 0, patch: 0 });
-});
-
 test("utils generated app Node support matches Prisma matrix", () => {
-	assert.equal(getGeneratedAppNodeSupportText(), "^22.12 || ^24.0");
+	assert.equal(SUPPORTED_GENERATED_APP_NODE_TEXT, "^22.12 || ^24.0");
 	assert.equal(isGeneratedAppNodeVersionSupported("21.0.0"), false);
 	assert.equal(isGeneratedAppNodeVersionSupported("22.11.0"), false);
 	assert.equal(isGeneratedAppNodeVersionSupported("22.12.0"), true);
