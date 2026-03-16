@@ -1,6 +1,6 @@
 # adorex <a href="https://npmjs.com/package/adorex-cli"><img src="https://img.shields.io/npm/v/adorex-cli" alt="npm package"></a>
 
-Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql.
+Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql!
 
 ## Start an Adorex Project
 
