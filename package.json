@@ -35,7 +35,7 @@
     "starter"
   ],
   "author": "Mykal Steele",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^1.1.0",
     "boxen": "^8.0.1",
