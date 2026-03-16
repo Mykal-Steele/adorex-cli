@@ -1,0 +1,8 @@
+# Keep package contents explicit and stable.
+template/node_modules/
+template/dist/
+template/src/generated/
+
+# Misc local/editor artifacts
+**/.DS_Store
+**/*.log

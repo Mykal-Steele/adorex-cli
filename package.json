@@ -1,0 +1,30 @@
+{
+  "name": "adorex-cli",
+  "version": "1.0.5",
+  "description": "Create Express + TypeScript + Prisma + SQLite projects instantly",
+  "type": "module",
+  "bin": {
+    "adorex": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "files": [
+    "bin/",
+    "template/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "express",
+    "typescript",
+    "prisma",
+    "sqlite",
+    "scaffold",
+    "cli",
+    "starter"
+  ],
+  "author": "",
+  "license": "ISC"
+}
