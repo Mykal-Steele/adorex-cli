@@ -83,3 +83,8 @@ npm run dev
 - `npm run typecheck` - run static type checks
 - `npm run build` - compile output into `dist/`
 - `npm run start` - run the production build
+
+
+If you enjoyed the package, consider buying me a virtual coffee ☕ @ [buymeacoffee.com](https://buymeacoffee.com/mykalstele4) 
+
+<a href="https://buymeacoffee.com/mykalstele4"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" alt="Buy Me A Coffee"></a>
