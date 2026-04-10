@@ -1,4 +1,12 @@
-# adorex [![npm package](https://img.shields.io/npm/v/adorex-cli)](https://www.npmjs.com/package/adorex-cli)
+# adorex (Deprecated) [![npm package](https://img.shields.io/npm/v/adorex-cli)](https://www.npmjs.com/package/adorex-cli)
+
+# ⚠️ MOVED
+
+### This package has been renamed to **[create-adorex](https://www.npmjs.com/package/create-adorex)**.
+
+### Please use the package moving forward: https://www.npmjs.com/package/create-adorex
+
+Github Repo - https://github.com/Mykal-Steele/adorex-cli
 
 Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql!
 
@@ -84,7 +92,6 @@ npm run dev
 - `npm run build` - compile output into `dist/`
 - `npm run start` - run the production build
 
-
-If you enjoyed the package, consider buying me a virtual coffee ☕ @ [buymeacoffee.com](https://buymeacoffee.com/mykalstele4) 
+If you enjoyed the package, consider buying me a virtual coffee ☕ @ [buymeacoffee.com](https://buymeacoffee.com/mykalstele4)
 
 <a href="https://buymeacoffee.com/mykalstele4"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" alt="Buy Me A Coffee"></a>
