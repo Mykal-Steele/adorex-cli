@@ -4,7 +4,8 @@
   "description": "Scaffold Express + TypeScript + Prisma + SQLite apps",
   "type": "module",
   "bin": {
-    "adorex": "bin/cli.js"
+    "adorex": "bin/cli.js",
+    "create-adorex": "bin/cli.js"
   },
   "scripts": {
     "prepublishOnly": "npm run test",

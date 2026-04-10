@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { cac } from "cac";
-import { cancel, intro, isCancel, note, text } from "@clack/prompts";
+import { cancel, isCancel, text } from "@clack/prompts";
 import boxen from "boxen";
 import logSymbols from "log-symbols";
 import pc from "picocolors";
@@ -13,11 +13,10 @@ import {
   ensureProjectPathAvailable,
   renderTemplateFiles,
   runGitInit,
-  runInstall,
-  runPrismaGenerate,
 } from "../lib/scaffold.js";
 import {
   printCliLogo,
+  printHeader,
   printNextSteps,
   readCliVersion,
   toPackageName,
@@ -27,6 +26,7 @@ import {
 
 const cliVersion = readCliVersion(CLI_PACKAGE_JSON_PATH);
 const scaffoldedWith = `create-adorex@${cliVersion}`;
+const DEFAULT_PROJECT_NAME = "my-app";
 
 function maybeNotifyUpdates() {
   if (process.env.ADOREX_DISABLE_UPDATE_NOTIFIER === "1") {
@@ -60,14 +60,14 @@ async function resolveProjectName(initialName) {
 
   const answer = await text({
     message: "Project name",
-    placeholder: "my-app",
+    placeholder: DEFAULT_PROJECT_NAME,
   });
 
   if (isCancel(answer)) {
     throw new Error("Operation cancelled by user.");
   }
 
-  return String(answer).trim();
+  return String(answer).trim() || DEFAULT_PROJECT_NAME;
 }
 
 async function scaffold(projectName) {
@@ -76,11 +76,12 @@ async function scaffold(projectName) {
   const packageName = toPackageName(appName);
   const nodeWarning = warnIfUnsupportedGeneratedAppNode();
 
-  printCliLogo();
-  intro(pc.cyan("Scaffolding your Adorex app"));
+  printCliLogo(cliVersion);
+  printHeader(pc.bold("Scaffolding your Adorex app"));
   maybeNotifyUpdates();
+
   if (nodeWarning) {
-    note(nodeWarning, "Node compatibility");
+    console.log(pc.yellow(nodeWarning));
   }
 
   const projectPath = path.join(process.cwd(), appName);
@@ -95,23 +96,26 @@ async function scaffold(projectName) {
   console.log(`${logSymbols.success} ${pc.green(`Created ${appName}`)}`);
   if (!skipSetup) {
     await runGitInit(projectPath);
-    await runInstall(projectPath);
-    await runPrismaGenerate(projectPath);
   }
 
   printNextSteps(appName);
+  const checkmark = pc.green("Congrats!");
+  const README = pc.green("README.md");
+
+  const readyText = `${checkmark} "${appName}" is ready to go!\nDon't forget to read ${README}\nfor setup instructions. Good luck! XD`;
   console.log(
-    boxen(`${logSymbols.success} ${appName} is ready to go`, {
+    boxen(readyText, {
       padding: 1,
       margin: 1,
       borderStyle: "round",
       borderColor: "green",
+      align: "center",
     }),
   );
 }
 
 async function main() {
-  const cli = cac("adorex");
+  const cli = cac("create-adorex");
   cli.version(cliVersion, "-v, --version");
   cli.help();
 

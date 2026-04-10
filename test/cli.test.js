@@ -147,6 +147,11 @@ test("package.json name is create-adorex", () => {
   assert.equal(cliPackageJson.name, "create-adorex");
 });
 
+test("package.json bin includes the create-adorex alias", () => {
+  assert.equal(cliPackageJson.bin.adorex, "bin/cli.js");
+  assert.equal(cliPackageJson.bin["create-adorex"], "bin/cli.js");
+});
+
 test("utils readCliVersion returns the current package version", () => {
   assert.equal(readCliVersion(CLI_PACKAGE_JSON_PATH), cliPackageJson.version);
 });
@@ -216,10 +221,11 @@ test("utils printCliLogo outputs the CLI banner", () => {
   console.log = (line) => logs.push(String(line ?? ""));
 
   try {
-    printCliLogo();
+    printCliLogo("1.3.11");
     const rendered = logs.join("\n");
     assert.equal(rendered.includes("___       __"), true);
     assert.equal(rendered.includes("/____/ .___/"), true);
+    assert.equal(rendered.includes("create-adorex 1.3.11"), true);
   } finally {
     console.log = originalLog;
   }

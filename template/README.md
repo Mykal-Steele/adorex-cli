@@ -1,22 +1,33 @@
 # {{appName}}
 
-Express + TypeScript + Prisma + SQLite starter app.
+A simple Express + TypeScript + Prisma + SQLite starter app.
 
 Scaffolded with {{scaffoldedWith}}.
 
-## Requirements
-
-- Node `^22.12 || ^24.0`
-
 ## Quick start
 
-1. Create your first migration:
+1. Install the dependencies:
+
+```bash
+npm install
+```
+
+2. Edit `prisma/schema.prisma` to match your app's data model.
+   - Add your own models, fields, and relations before you generate the client.
+
+3. Create your first migration:
 
 ```bash
 npx prisma migrate dev --name init
 ```
 
-2. Start the dev server:
+4. Generate Prisma client code:
+
+```bash
+npx prisma generate
+```
+
+5. Start the dev server:
 
 ```bash
 npm run dev
@@ -24,21 +35,22 @@ npm run dev
 
 ## Scripts
 
-- `npm run dev` - start dev server with watch mode
-- `npm run typecheck` - run TypeScript checks only
-- `npm run build` - compile to `dist/`
-- `npm run start` - run compiled app
+- `npm run dev` - starts the dev server in watch mode
+- `npm run typecheck` - runs TypeScript checks only
+- `npm run build` - compiles to `dist/`
+- `npm run start` - runs the compiled app
 
 ## Database
 
-Edit `prisma/schema.prisma`, then run:
+Update `prisma/schema.prisma` first.
+After changing the schema, run:
 
 ```bash
 npx prisma migrate dev --name <name>
+npx prisma generate
 ```
 
-Prisma client output goes to `src/generated/prisma`.
-Regenerate Prisma client with `npx prisma generate` when needed.
+The generated Prisma client is placed in `src/generated/prisma`.
 
 ## Environment
 
