@@ -8,8 +8,8 @@
     "create-adorex": "bin/cli.js"
   },
   "scripts": {
-    "prepublishOnly": "$npm_execpath run test",
-    "release": "$npm_execpath publish --access public",
+    "prepublishOnly": "npm test",
+    "release": "npm publish --access public",
     "test": "node --test"
   },
   "files": [
