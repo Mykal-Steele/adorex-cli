@@ -49,5 +49,8 @@
     "semver": "^7.7.4",
     "update-notifier-cjs": "^5.1.7",
     "validate-npm-package-name": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2"
   }
 }
