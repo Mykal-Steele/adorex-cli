@@ -1,12 +1,4 @@
-# adorex (Deprecated) [![npm package](https://img.shields.io/npm/v/adorex-cli)](https://www.npmjs.com/package/adorex-cli)
-
-# ⚠️ MOVED
-
-### This package has been renamed to **[create-adorex](https://www.npmjs.com/package/create-adorex)**.
-
-### Please use the package moving forward: https://www.npmjs.com/package/create-adorex
-
-Github Repo - https://github.com/Mykal-Steele/adorex-cli
+# adorex [![npm package](https://img.shields.io/npm/v/create-adorex)](https://www.npmjs.com/package/create-adorex)
 
 Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql!
 
@@ -19,37 +11,31 @@ Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQL
 With NPM:
 
 ```bash
-npx adorex-cli
+npm create adorex
 ```
 
 With Yarn:
 
 ```bash
-yarn dlx adorex-cli
+yarn create adorex
 ```
 
 With PNPM:
 
 ```bash
-pnpm dlx adorex-cli
+pnpm create adorex
 ```
 
-Or install once and run globally:
 
-```bash
-npm i -g adorex-cli
-adorex
-```
 
 The CLI will guide you through setup.
 
 Prefer non-interactive usage? Pass a name directly:
 
 ```bash
-npx adorex-cli my-app
-yarn dlx adorex-cli my-app
-pnpm dlx adorex-cli my-app
-adorex my-app
+npm create adorex my-app
+yarn create adorex my-app
+pnpm create adorex my-app
 ```
 
 ## Project Layout

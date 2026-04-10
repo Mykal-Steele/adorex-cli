@@ -1,7 +1,7 @@
 {
   "name": "adorex-app",
   "version": "1.0.0",
-  "description": "Express + TypeScript + Prisma + SQLite application scaffolded with adorex-cli",
+  "description": "Express + TypeScript + Prisma + SQLite application scaffolded with adorex",
   "license": "ISC",
   "type": "module",
   "adorex": {
