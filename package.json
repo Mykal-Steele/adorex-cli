@@ -10,7 +10,8 @@
   "scripts": {
     "prepublishOnly": "npm test",
     "release": "npm publish --access public",
-    "test": "node --test"
+    "test": "node --test",
+    "upd:temp": "cd template/ && npm update"
   },
   "files": [
     "bin/",
