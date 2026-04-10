@@ -1,6 +1,6 @@
 {
   "name": "create-adorex",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "Scaffold Express + TypeScript + Prisma + SQLite apps",
   "type": "module",
   "bin": {
