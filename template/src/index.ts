@@ -1,19 +1,20 @@
 import "dotenv/config";
-import express from "express";
-import { prisma } from "./utils/prisma.js";
-import { logger } from "./utils/logger.js";
+import express, { Request, Response } from "express";
+import morgan from "morgan";
+import prisma from "./utils/prisma.js";
 
 const app = express();
-const port = parseInt(process.env.PORT || "3000", 10);
+const port = process.env.PORT || "3000";
 
 app.use(express.json());
-app.use(logger);
+app.use(morgan("tiny"));
 
-app.get("/", (_req, res) => {
+app.get("/", (_req: Request, res: Response) => {
   res.json({ message: "adorex app running" });
 });
 
-app.get("/health", async (_req, res) => {
+// Fetch user table and return all users
+app.get("/health", async (_req: Request, res: Response) => {
   const users = await prisma.user.findMany();
   res.json({ ok: true, data: users });
 });
