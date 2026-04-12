@@ -1,12 +1,10 @@
 # {{appName}}
 
-A simple Express + TypeScript + Prisma + SQLite starter app.
+Express + TypeScript + Prisma + SQLite starter app. Scaffolded with {{scaffoldedWith}}.
 
-Scaffolded with {{scaffoldedWith}}.
+## Setup
 
-## Quick start
-
-1. Install the dependencies:
+1. Install dependencies:
 
 ```bash
 npm install
@@ -21,7 +19,7 @@ npm install
 npx prisma migrate dev --name init
 ```
 
-4. Generate Prisma client code:
+4. Generate the Prisma client:
 
 ```bash
 npx prisma generate

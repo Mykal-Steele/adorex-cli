@@ -1,19 +1,16 @@
 #!/usr/bin/env node
-import path from "node:path";
-import { cac } from "cac";
-import { cancel, isCancel, text } from "@clack/prompts";
-import boxen from "boxen";
-import logSymbols from "log-symbols";
-import pc from "picocolors";
-import updateNotifier from "update-notifier-cjs";
+import path from 'node:path';
+import fs from 'node:fs';
+import { cac } from 'cac';
+import { confirm, isCancel, text } from '@clack/prompts';
+import pc from 'picocolors';
 
-import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from "../lib/constants.js";
+import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from '../lib/constants.js';
 import {
   copyTemplate,
-  ensureProjectPathAvailable,
   renderTemplateFiles,
   runGitInit,
-} from "../lib/scaffold.js";
+} from '../lib/scaffold.js';
 import {
   printCliLogo,
   printHeader,
@@ -22,111 +19,128 @@ import {
   toPackageName,
   validateProjectName,
   warnIfUnsupportedGeneratedAppNode,
-} from "../lib/utils.js";
+} from '../lib/utils.js';
 
 const cliVersion = readCliVersion(CLI_PACKAGE_JSON_PATH);
 const scaffoldedWith = `create-adorex@${cliVersion}`;
-const DEFAULT_PROJECT_NAME = "my-app";
-
-function maybeNotifyUpdates() {
-  if (process.env.ADOREX_DISABLE_UPDATE_NOTIFIER === "1") {
-    return;
-  }
-
-  try {
-    const notifier = updateNotifier({
-      pkg: {
-        name: "create-adorex",
-        version: cliVersion,
-      },
-      updateCheckInterval: 1000 * 60 * 60 * 6,
-    });
-
-    notifier.notify({ isGlobal: true, defer: true });
-  } catch {
-    // Never block scaffolding because of update checks.
-  }
-}
+const DEFAULT_PROJECT_NAME = 'my-app';
+const VALID_TEMPLATES = ['express-sqlite'];
 
 async function resolveProjectName(initialName) {
-  const providedName = String(initialName ?? "").trim();
+  const providedName = String(initialName ?? '').trim();
   if (providedName) {
     return providedName;
   }
 
   if (!(process.stdin.isTTY && process.stdout.isTTY)) {
-    return "";
+    return '';
   }
 
   const answer = await text({
-    message: "Project name",
+    message: 'Project name',
     placeholder: DEFAULT_PROJECT_NAME,
   });
 
   if (isCancel(answer)) {
-    throw new Error("Operation cancelled by user.");
+    throw new Error('Operation cancelled by user.');
   }
 
   return String(answer).trim() || DEFAULT_PROJECT_NAME;
 }
 
-async function scaffold(projectName) {
-  const skipSetup = process.env.ADOREX_SKIP_SETUP === "1";
-  const appName = validateProjectName(projectName);
+async function handleExistingDir(projectPath, appName, force) {
+  if (!fs.existsSync(projectPath)) return;
+
+  if (force) {
+    fs.rmSync(projectPath, { recursive: true });
+    return;
+  }
+
+  if (!(process.stdin.isTTY && process.stdout.isTTY)) {
+    throw new Error(`Directory '${appName}' already exists`);
+  }
+
+  const answer = await confirm({
+    message: `${pc.red('Directory')} "${pc.red(appName)}" ${pc.red('already exists. Remove and continue?')}`,
+  });
+
+  if (isCancel(answer) || !answer) {
+    throw new Error('Operation cancelled.');
+  }
+
+  fs.rmSync(projectPath, { recursive: true });
+}
+
+async function scaffold(projectName, options = {}) {
+  const { template = 'express-sqlite', force = false } = options;
+
+  if (!VALID_TEMPLATES.includes(template)) {
+    throw new Error(
+      `Unknown template "${template}". Available: ${VALID_TEMPLATES.join(', ')}`,
+    );
+  }
+
+  const skipSetup = process.env.ADOREX_SKIP_SETUP === '1';
+  const isDot = projectName === '.';
+  const appName = isDot
+    ? path.basename(process.cwd())
+    : validateProjectName(projectName);
   const packageName = toPackageName(appName);
   const nodeWarning = warnIfUnsupportedGeneratedAppNode();
 
   printCliLogo(cliVersion);
-  printHeader(pc.bold("Scaffolding your Adorex app"));
-  maybeNotifyUpdates();
+  printHeader(pc.green('Scaffolding your Adorex app'));
 
   if (nodeWarning) {
     console.log(pc.yellow(nodeWarning));
   }
 
-  const projectPath = path.join(process.cwd(), appName);
-  ensureProjectPathAvailable(projectPath, appName);
-  await copyTemplate(TEMPLATE_DIR, projectPath);
+  const projectPath = isDot ? process.cwd() : path.join(process.cwd(), appName);
+
+  if (!isDot) {
+    await handleExistingDir(projectPath, appName, force);
+  }
+
+  await copyTemplate(TEMPLATE_DIR, projectPath, isDot);
   await renderTemplateFiles(projectPath, {
     appName,
     packageName,
     scaffoldedWith,
   });
 
-  console.log(`${logSymbols.success} ${pc.green(`Created ${appName}`)}`);
+  console.log(`  ${pc.green('✔')} Created ${pc.green(appName)}`);
+
   if (!skipSetup) {
     await runGitInit(projectPath);
   }
 
-  printNextSteps(appName);
-  const checkmark = pc.green("Congrats!");
-  const README = pc.green("README.md");
-
-  const readyText = `${checkmark} "${appName}" is ready to go!\nDon't forget to read ${README}\nfor setup instructions. Good luck! XD`;
+  printNextSteps(isDot ? '.' : pc.green(appName));
   console.log(
-    boxen(readyText, {
-      padding: 1,
-      margin: 1,
-      borderStyle: "round",
-      borderColor: "green",
-      align: "center",
-    }),
+    `  ${pc.green('✔')} ${pc.green(`"${appName}" is ready!`)}\n Don't forget to read ${pc.yellowBright('README.md')}\nfor setup instructions. ${pc.green('Good luck! XD')}`,
   );
 }
 
 async function main() {
-  const cli = cac("create-adorex");
-  cli.version(cliVersion, "-v, --version");
+  const cli = cac('create-adorex');
+  cli.version(cliVersion, '-v, --version');
   cli.help();
 
   let projectNameFromArgs;
+  let scaffoldOptions = {};
+
   cli
     .command(
-      "[project-name]",
-      "Scaffold a new Express + TypeScript + Prisma app",
+      '[project-name]',
+      'Scaffold a new Express + TypeScript + Prisma app',
     )
-    .action(async (projectName) => {
+    .option('--template <name>', 'Template to use (default: express-sqlite)')
+    .option('--force', 'Overwrite existing target directory')
+    .action((projectName, options) => {
       projectNameFromArgs = projectName;
+      scaffoldOptions = {
+        template: options.template ?? 'express-sqlite',
+        force: options.force ?? false,
+      };
     });
 
   const parsed = cli.parse();
@@ -135,13 +149,13 @@ async function main() {
   }
 
   const projectName = await resolveProjectName(projectNameFromArgs);
-  await scaffold(projectName);
+  await scaffold(projectName, scaffoldOptions);
 }
 
 try {
   await main();
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
-  cancel(message);
+  process.stderr.write(`${message}\n`);
   process.exitCode = 1;
 }
