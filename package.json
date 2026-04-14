@@ -8,6 +8,7 @@
     "create-adorex": "bin/cli.js"
   },
   "scripts": {
+    "prepack": "rm -rf template/node_modules template/dist",
     "prepublishOnly": "npm test",
     "release": "npm publish --access public",
     "test": "node --test",

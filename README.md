@@ -1,13 +1,37 @@
 # create-adorex
 
-Scaffold an Express + TypeScript + Prisma + SQLite app.
+Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql!
+
+> **Node Support:**
+> Run the CLI on Node.js 22 or newer.
+> Generated apps are validated on Node.js `^22.12 || ^24.0`.
 
 ## Usage
 
+You can use npm, pnpm, yarn, bun, or any other package manager that pulls from npm
+
 ```bash
-npm create adorex@latest              # interactive — prompts for project name
-npm create adorex@latest my-app       # scaffold into ./my-app
-npm create adorex@latest .            # scaffold into current directory
+npm create adorex
+pnpm create adorex
+yarn create adorex
+bun create adorex
+```
+
+If you would like to create the app directly in the dir you are in run
+```bash
+npm create adorex .
+pnpm create adorex .
+yarn create adorex .
+bun create adorex .
+```
+
+Prefer non-interactive usage? Pass a name directly:
+
+```bash
+npm create adorex my-app
+pnpm create adorex my-app
+yarn create adorex my-app
+bun create adorex my-app
 ```
 
 Flags go after `--`:
@@ -26,7 +50,22 @@ npm create adorex@latest -- --version
 | `-v, --version`     | Print version                                   |
 | `-h, --help`        | Print help                                      |
 
-## Quick start
+## Project Layout
+
+```text
+my-app/
+  src/
+    index.ts
+    utils/
+      prisma.ts
+  prisma/
+    schema.prisma
+  prisma.config.ts
+  tsconfig.json
+  .env
+```
+
+After generation:
 
 1. Install the dependencies:
 
@@ -62,18 +101,6 @@ npm run dev
 - `npm run build` - compiles to `dist/`
 - `npm run start` - runs the compiled app
 
-## Database
-
-Update `prisma/schema.prisma` first.
-After changing the schema, run:
-
-```bash
-npx prisma migrate dev --name <name>
-npx prisma generate
-```
-
-The generated Prisma client is placed in `src/generated/prisma`.
-
 ## Environment
 
 Default `.env` values:
@@ -82,3 +109,16 @@ Default `.env` values:
 PORT=3000
 DATABASE_URL="file:./dev.db"
 ```
+## Stack
+
+- Node.js: `^22.12 || ^24.0`
+- Express: `^5.2.1`
+- TypeScript: `^5.9.2`
+- Prisma ORM: `prisma ^7.5.0` and `@prisma/client ^7.5.0`
+- SQLite via libsql: `@libsql/client ^0.17.0` and `@prisma/adapter-libsql ^7.5.0`
+- Dev tooling: `tsx ^4.20.5` and `dotenv ^16.4.7`
+
+
+If you enjoyed the package, consider buying me a virtual coffee ☕ @ [buymeacoffee.com](https://buymeacoffee.com/mykalstele4)
+
+<a href="https://buymeacoffee.com/mykalstele4"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" alt="Buy Me A Coffee"></a>
