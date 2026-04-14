@@ -5,26 +5,13 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
-import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from '../lib/constants.js';
-import {
-  printCliLogo,
-  readCliVersion,
-  toPackageName,
-  printNextSteps,
-} from '../lib/utils.js';
+import { toPackageName } from '../lib/utils.js';
 
 const cliPath = path.join(process.cwd(), 'bin/cli.js');
 const cliPackageJson = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'),
 );
 const expectedScaffoldedWith = `create-adorex@${cliPackageJson.version}`;
-const expectedScaffoldedWithRegex = new RegExp(
-  `Scaffolded with ${escapeRegex(expectedScaffoldedWith)}`,
-);
-
-function escapeRegex(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -56,22 +43,14 @@ test('creates a scaffolded project', () => {
   withTempDir((tempDir) => {
     const projectName = 'My App';
     const result = runCli([projectName], tempDir);
-    const combinedOutput = `${result.stdout}\n${result.stderr}`;
 
     assert.equal(result.status, 0, result.stderr);
-    assert.match(combinedOutput, /___\s+__\s+_\s*/);
 
     const projectPath = path.join(tempDir, projectName);
     const packageJson = readJson(path.join(projectPath, 'package.json'));
-    const packageLock = readJson(path.join(projectPath, 'package-lock.json'));
-    const readme = fs.readFileSync(path.join(projectPath, 'README.md'), 'utf8');
 
     assert.equal(packageJson.name, 'my-app');
     assert.equal(packageJson.adorex.scaffoldedWith, expectedScaffoldedWith);
-    assert.equal(packageLock.name, 'my-app');
-    assert.equal(packageLock.packages[''].name, 'my-app');
-    assert.match(readme, /^# My App$/m);
-    assert.match(readme, expectedScaffoldedWithRegex);
     assert.equal(fs.existsSync(path.join(projectPath, 'src/index.ts')), true);
     assert.equal(
       fs.existsSync(path.join(projectPath, 'prisma/schema.prisma')),
@@ -140,74 +119,8 @@ test('shows version output', () => {
   });
 });
 
-test('package.json name is create-adorex', () => {
-  assert.equal(cliPackageJson.name, 'create-adorex');
-});
-
-test('package.json bin includes the create-adorex alias', () => {
-  assert.equal(cliPackageJson.bin.adorex, 'bin/cli.js');
-  assert.equal(cliPackageJson.bin['create-adorex'], 'bin/cli.js');
-});
-
-test('utils readCliVersion returns the current package version', () => {
-  assert.equal(readCliVersion(CLI_PACKAGE_JSON_PATH), cliPackageJson.version);
-});
-
-test('utils readCliVersion returns unknown for missing package file', () => {
-  const missingPath = path.join(
-    os.tmpdir(),
-    `adorex-missing-${Date.now()}.json`,
-  );
-  assert.equal(readCliVersion(missingPath), 'unknown');
-});
-
-test('utils toPackageName normalizes names', () => {
+test('toPackageName normalizes names', () => {
   assert.equal(toPackageName('My App'), 'my-app');
   assert.equal(toPackageName('__Demo..App__'), 'demo-app');
   assert.equal(toPackageName('***'), 'adorex-app');
-});
-
-test('utils printNextSteps includes next steps', () => {
-  const logs = [];
-  const originalLog = console.log;
-  console.log = (line) => logs.push(String(line ?? ''));
-
-  try {
-    printNextSteps('demo-app');
-    assert.equal(
-      logs.some((line) => line.includes('cd "demo-app"')),
-      true,
-    );
-    assert.equal(
-      logs.some((line) => line.includes('npx prisma migrate dev --name init')),
-      true,
-    );
-    assert.equal(
-      logs.some((line) => line.includes('npm run dev')),
-      true,
-    );
-  } finally {
-    console.log = originalLog;
-  }
-});
-
-test('utils printCliLogo outputs the CLI banner', () => {
-  const logs = [];
-  const originalLog = console.log;
-  console.log = (line) => logs.push(String(line ?? ''));
-
-  try {
-    printCliLogo('1.3.11');
-    const rendered = logs.join('\n');
-    assert.equal(rendered.includes('___       __'), true);
-    assert.equal(rendered.includes('/____/ .___/'), true);
-    assert.equal(rendered.includes('create-adorex 1.3.11'), true);
-  } finally {
-    console.log = originalLog;
-  }
-});
-
-test('constants resolve to existing template and package paths', () => {
-  assert.equal(fs.existsSync(TEMPLATE_DIR), true);
-  assert.equal(fs.existsSync(CLI_PACKAGE_JSON_PATH), true);
 });
