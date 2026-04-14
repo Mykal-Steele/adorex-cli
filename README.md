@@ -2,10 +2,6 @@
 
 Bootstrap an API-ready backend starter with Express, TypeScript, Prisma, and SQLite through libsql!
 
-> **Node Support:**
-> Run the CLI on Node.js 22 or newer.
-> Generated apps are validated on Node.js `^22.12 || ^24.0`.
-
 ## Usage
 
 You can use npm, pnpm, yarn, bun, or any other package manager that pulls from npm

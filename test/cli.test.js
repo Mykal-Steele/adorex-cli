@@ -7,12 +7,9 @@ import test from 'node:test';
 
 import { CLI_PACKAGE_JSON_PATH, TEMPLATE_DIR } from '../lib/constants.js';
 import {
-  SUPPORTED_GENERATED_APP_NODE_TEXT,
-  isGeneratedAppNodeVersionSupported,
   printCliLogo,
   readCliVersion,
   toPackageName,
-  warnIfUnsupportedGeneratedAppNode,
   printNextSteps,
 } from '../lib/utils.js';
 
@@ -170,28 +167,7 @@ test('utils toPackageName normalizes names', () => {
   assert.equal(toPackageName('***'), 'adorex-app');
 });
 
-test('utils generated app Node support matches Prisma matrix', () => {
-  assert.equal(SUPPORTED_GENERATED_APP_NODE_TEXT, '^22.12 || ^24.0');
-  assert.equal(isGeneratedAppNodeVersionSupported('21.0.0'), false);
-  assert.equal(isGeneratedAppNodeVersionSupported('22.11.0'), false);
-  assert.equal(isGeneratedAppNodeVersionSupported('22.12.0'), true);
-  assert.equal(isGeneratedAppNodeVersionSupported('24.0.0'), true);
-  assert.equal(isGeneratedAppNodeVersionSupported('30.0.0'), false);
-});
-
-test('utils warnIfUnsupportedGeneratedAppNode prints warning details', () => {
-  const warning = warnIfUnsupportedGeneratedAppNode('30.0.0');
-  assert.equal(typeof warning, 'string');
-  assert.equal(warning.includes('tested with'), true);
-  assert.equal(warning.includes('30.0.0'), true);
-});
-
-test('utils warnIfUnsupportedGeneratedAppNode is quiet for supported versions', () => {
-  const warning = warnIfUnsupportedGeneratedAppNode('22.12.0');
-  assert.equal(warning, null);
-});
-
-test('utils printNextSteps includes Node support guidance', () => {
+test('utils printNextSteps includes next steps', () => {
   const logs = [];
   const originalLog = console.log;
   console.log = (line) => logs.push(String(line ?? ''));

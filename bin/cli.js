@@ -18,7 +18,6 @@ import {
   readCliVersion,
   toPackageName,
   validateProjectName,
-  warnIfUnsupportedGeneratedAppNode,
 } from '../lib/utils.js';
 
 const cliVersion = readCliVersion(CLI_PACKAGE_JSON_PATH);
@@ -82,14 +81,9 @@ async function scaffold(projectName, options = {}) {
     ? path.basename(process.cwd())
     : validateProjectName(projectName);
   const packageName = toPackageName(appName);
-  const nodeWarning = warnIfUnsupportedGeneratedAppNode();
 
   printCliLogo(cliVersion);
   printHeader(pc.green('Scaffolding your Adorex app'));
-
-  if (nodeWarning) {
-    console.log(pc.yellow(nodeWarning));
-  }
 
   const projectPath = isDot ? process.cwd() : path.join(process.cwd(), appName);
 
