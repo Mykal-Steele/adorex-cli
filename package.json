@@ -12,7 +12,9 @@
     "prepublishOnly": "npm test",
     "release": "npm publish --access public",
     "test": "node --test",
-    "upd:temp": "cd template/ && npm update"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "update-template": "cd template/ && npm update"
   },
   "files": [
     "bin/",
@@ -50,6 +52,7 @@
     "validate-npm-package-name": "^7.0.2"
   },
   "devDependencies": {
-    "@types/node": "^25.6.0"
+    "@types/node": "^25.6.0",
+    "prettier": "^3.5.0"
   }
 }

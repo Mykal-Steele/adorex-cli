@@ -64,7 +64,7 @@ jobs:
       - run: npm ci
       - name: Scaffold generated app
         env:
-          ADOREX_DISABLE_UPDATE_NOTIFIER: "1"
+          ADOREX_DISABLE_UPDATE_NOTIFIER: '1'
         run: |
           node bin/cli.js smoke-app
       - name: Verify generated app compiles

@@ -18,6 +18,7 @@ bun create adorex
 ```
 
 If you would like to create the app directly in the dir you are in run
+
 ```bash
 npm create adorex .
 pnpm create adorex .
@@ -109,6 +110,7 @@ Default `.env` values:
 PORT=3000
 DATABASE_URL="file:./dev.db"
 ```
+
 ## Stack
 
 - Node.js: `^22.12 || ^24.0`
@@ -117,7 +119,6 @@ DATABASE_URL="file:./dev.db"
 - Prisma ORM: `prisma ^7.5.0` and `@prisma/client ^7.5.0`
 - SQLite via libsql: `@libsql/client ^0.17.0` and `@prisma/adapter-libsql ^7.5.0`
 - Dev tooling: `tsx ^4.20.5` and `dotenv ^16.4.7`
-
 
 If you enjoyed the package, consider buying me a virtual coffee ☕ @ [buymeacoffee.com](https://buymeacoffee.com/mykalstele4)
 

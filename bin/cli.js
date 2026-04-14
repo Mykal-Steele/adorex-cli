@@ -27,14 +27,10 @@ const DEFAULT_PROJECT_NAME = 'my-app';
 const VALID_TEMPLATES = ['express-sqlite'];
 
 async function resolveProjectName(initialName) {
-  const providedName = String(initialName ?? '').trim();
-  if (providedName) {
-    return providedName;
-  }
+  const provided = String(initialName ?? '').trim();
+  if (provided) return provided;
 
-  if (!(process.stdin.isTTY && process.stdout.isTTY)) {
-    return '';
-  }
+  if (!(process.stdin.isTTY && process.stdout.isTTY)) return '';
 
   const answer = await text({
     message: 'Project name',
@@ -57,7 +53,7 @@ async function handleExistingDir(projectPath, appName, force) {
   }
 
   if (!(process.stdin.isTTY && process.stdout.isTTY)) {
-    throw new Error(`Directory '${appName}' already exists`);
+    throw new Error(`Directory "${appName}" already exists`);
   }
 
   const answer = await confirm({
