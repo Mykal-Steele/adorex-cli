@@ -67,6 +67,9 @@ jobs:
           ADOREX_DISABLE_UPDATE_NOTIFIER: '1'
         run: |
           node bin/cli.js smoke-app
+      - name: Install generated app dependencies
+        working-directory: smoke-app
+        run: npm install
       - name: Verify generated app compiles
         working-directory: smoke-app
         run: |
