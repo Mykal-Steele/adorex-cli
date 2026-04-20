@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import morgan from 'morgan';
 import prisma from './utils/prisma.js';
 
