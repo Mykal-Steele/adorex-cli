@@ -2,10 +2,11 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import { z, ZodError } from 'zod';
 import morgan from 'morgan';
-import prisma from './utils/prisma.js';
+import prisma from './lib/prisma.js';
 
 const app = express();
-const PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT;
+if (!PORT) throw new Error('PORT is not in the .env file');
 
 app.use(express.json());
 app.use(morgan('dev'));
