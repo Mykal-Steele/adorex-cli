@@ -287,7 +287,7 @@ describe('template directory', () => {
     'prisma.config.ts',
     'prisma/schema.prisma',
     'src/index.ts',
-    'src/utils/prisma.ts',
+    'src/lib/prisma.ts',
     'README.md',
     '_gitignore',
     '.env',
