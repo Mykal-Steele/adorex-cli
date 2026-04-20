@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import prisma from './utils/prisma.js';
 
 const app = express();
-const port = process.env.PORT || '3000';
+const PORT = process.env.PORT || '3000';
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -22,6 +22,6 @@ app.get('/health', async (_req: Request, res: Response) => {
   res.json({ ok: true, data: users });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
