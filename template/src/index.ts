@@ -14,7 +14,9 @@ app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'adorex app running' });
 });
 
-// Fetch user table and return all users
+/**
+ * @NOTE MAKE SURE TO DELETE OR EDIT THIS ENDPOINT IF YOU REMOVED THE DEFAULT USER TABLE
+ */
 app.get('/health', async (_req: Request, res: Response) => {
   const users = await prisma.user.findMany();
   res.json({ ok: true, data: users });
