@@ -74,6 +74,7 @@ jobs:
         working-directory: smoke-app
         run: |
           npx prisma validate
+          npx prisma generate
           npm run typecheck
           npm run build
       - name: Verify generated app starts
